@@ -1,0 +1,43 @@
+{% extends "adminhead.html" %}
+{% load static %}
+{% block content %}
+
+<section id="main-content" style="min-height: 93vh">
+    <section class="wrapper">
+        <h3>Welcome, Admin </h3>
+        <div class="row mt">
+            <div class="col-lg-12">
+            <h4>
+     <!--     <?php
+          $qry=mysql_query("select * from bank where bank_loginid=1");
+                          $row=mysql_fetch_array($qry);
+                          $balance=$row['balance'];
+                          
+                  if(!empty($balance))
+                  {
+                  ?>
+                  Your Account Balance is Rs:<?php echo $balance;?>/-
+                  <?php
+                  }
+                  else
+                  {
+                  ?>
+                  Please Add Bank Account Details!!!!
+                  <br /><br />
+                   <li>
+               <a class="" href="add_bank_details.php">
+                    <i class="fa fa-desktop"></i>
+                    <span>Click to Add Bank Details</span>
+                </a>
+            </li>
+                  
+                  <?php
+                  }
+          
+                  ?>-->
+                  </h4>
+            </div>
+        </div>
+</section>
+</section>
+{% endblock %}

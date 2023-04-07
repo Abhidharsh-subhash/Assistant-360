@@ -1,0 +1,124 @@
+{% extends "adminhead.html" %}
+{% load static %}
+{% block content %}
+<section id="main-content">
+    <section class="wrapper" style="min-height: 93vh">
+        <h3>Staffs List</h3>
+            <div class="row mt">
+                <div class="col-lg-10">
+                <div class="content-panel" style="padding: 10px 10px;">
+                     
+                    <section id="unseen">
+                    <form name="f1" method="post" action="{% url 'list_staff' %}">
+                        {% csrf_token %}
+                    <table class="table table-bordered table-striped table-condensed" style="width: 500px">
+                    <tr><td>SELECT CATEGORY</td>
+                    <td>
+                     <select name="search_cat" >
+                     
+                      <option value="">--Select--</option>
+                      <option value="Taxi">Taxi</option>
+                      <option value="She Taxi">She Taxi</option>
+                      <option value="Auto">Auto</option>
+    
+                      <option value="JCB Operator">JCB Operator</option>
+    
+                      <option value="Electrician">Electrician</option>
+                      <option value="Plumbers">Plumbers</option>
+                      <option value="Painter">Painter</option>
+                      <option value="Maison">Maison</option>
+                      <option value="Welders">Welders</option>
+                      <option value="House Keeper">House Keeper</option>
+                      <option value="Home Nurse">Home Nurse</option>
+                      <option value="Baby caretakers">Baby caretakers</option>
+                      <option value="Vehicle Mechanics">Vehicle Mechanics</option>
+                  
+                      
+                      </select>
+                   </td>
+                   <td><input type="submit" name="sub" value="search"/></td>
+                   </tr>
+                   </table>
+                      </form>
+                    
+                    
+                    
+                    
+                      <table class="table table-bordered table-striped table-condensed" style="width: 100%">
+                      
+                        <thead>
+                        <tr>
+                        <th>Sl:No</th>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <!-- <th>Age</th> -->
+                        <th>Category</th>
+                        <th>Aadhar No</th>
+                        <th>Phone No</th>
+                        <th>Email Id</th>
+                        <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% for d in data %}
+                        <tr>
+                        
+                        
+
+                        
+                        
+                            <td>{{forloop.counter}}</td>
+                            
+                            
+                            
+                            
+                            <td><img src="../media/{{d.photo}}" alt="" height="50" width="70"/></td>
+                            <td>{{d.name}}</td>
+                            <td>{{d.address}}</td>
+                            <!-- <td><?php echo $row['staff_age'];?></td> -->
+                            <td>{{d.category}}</td>
+                            <td>{{d.aadhaar_no}}</td>
+                            <td>{{d.phone_no}}</td>
+                            <td>{{d.email}}</td>
+                       <td><a class="btn btn-success" data-toggle="modal" data-target="#delete-{{d.staff_id}}" href="#">Delete Staff</a>
+                              </td>
+<div class="modal fade" id="delete-{{d.staff_id}}" role="dialog" >
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+    <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+  <h4 class="modal-title custom_align" id="Heading">Delete Staff</h4>
+</div>
+   <div class="modal-body">
+   <br>
+   <h3 class="modal-title custom_align" id="Heading" style="margin-left:200px;color:#555">Are You Want Delete This Staff?</h3>
+   <br>
+   <form class="form-horizontal" method="post" name="myForm" onsubmit="" action="{% url 'delete_staff' %}">
+     <input type="hidden" class="form-control" value="{{d.staff_id}}" name="id"> 	 
+   <div class="box-content">
+    
+  <button name="delete" type="submit" class="btn btn-success" ><span class="glyphicon 
+  glyphicon-ok-sign"></span>Submit</button>
+<button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>No</button>
+                      
+</div>
+</form>
+   <div class="modal-footer ">
+  </div> 
+  </div>
+</div>
+</div>
+                        </tr>
+                        {% endfor %}								
+                      </tbody>
+                    </table>
+                    </section>
+            </div><!-- /content-panel -->
+         </div><!-- /col-lg-4 -->	
+        <div style="height:530px;">
+          </div>				   
+        </div><!-- /row -->
+      </section>
+  </section>
+  {% endblock %}

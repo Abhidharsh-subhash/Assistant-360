@@ -1,0 +1,180 @@
+{% extends "userhead.html" %}
+{% load static %}
+{% block content %}
+
+<section id="main-content">
+	<section class="wrapper">
+	<div class="form-w3layouts">
+        <!-- page start-->
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-12">
+                    <section class="panel" style="height:440px;">
+                        <header class="panel-heading">
+                         Search Labours
+                        </header>
+                        <div class="panel-body">
+						
+                            <div class="position-center" style="margin-left:300px;">
+                                <form  action="{% url 'find_labour' %}" method="post">
+                               {% csrf_token %}
+                                    <div class="form-group">
+                                    <label for="exampleInputEmail1">State</label>
+                                     <select class="form-control" name="state" id="state" required onchange="sh(this.value)" style="width:400px;">
+								 <option value="">--Select--</option>
+								
+                                 {% for d in datas%}
+								 <option value="{{d.state_id}}">{{d.state}}</option>
+								{% endfor %}
+                                
+								 </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">District</label>
+                                    <select class="form-control" name="district" id="districtw" onchange="sht(this.value)" style="width:400px;" required>
+								 <option value="">--Select--</option>
+								 </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Location</label>
+                                    <select class="form-control" name="location" id="location" style="width:400px;" required>
+								 <option value="">--Select--</option>
+								 </select>
+                                </div>
+								<div class="form-group">
+                                    <label for="exampleInputFile">Category</label>
+                                    <select class="form-control" name="category" id="" style="width:400px;" required>
+								 <option value="">--Select--</option>
+								 <option value="Painter">Painter</option>
+		                         <option value="Mason">Mason</option>
+		                         <option value="Welders">Welders</option>
+								 <option value="Electrician">Electrician</option>
+		                         <option value="Plumbers">Plumbers</option>
+		                         <option value="House Keeper">House Keeper</option>
+		                         <option value="Home Nurse">Home Nurse</option>
+		                         <option value="Baby caretakers">Baby Care Takers</option>
+		                         <option value="Vehicle Mechanics">Vehicle Mechanics</option>
+								 <option value="JCB Operator">JCB Operator</option></select>
+                                </div>
+                               <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                            </form>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                    <div class="table-agile-info">
+                        <div class="panel panel-default">
+                           <div class="panel-heading">
+                           Labours List
+                           </div>
+                           <div>
+                             <table class="table" ui-jq="footable" ui-options='{
+                               "paging": {
+                                 "enabled": true
+                               },
+                               "filtering": {
+                                 "enabled": true
+                               },
+                               "sorting": {
+                                 "enabled": true
+                               }}'>
+                               <thead>
+                                 <tr>
+                                 <th data-breakpoints="xs">Sl:No</th>
+                                   <th>Photo</th>
+                                   <th>Job Details</th>
+                                   <th data-breakpoints="xs">Name</th>
+                                   <th>Address</th>
+                                  
+                                   <th>Phone</th>
+                                   <th>Action</th>
+                                    </tr>
+                               </thead>
+                               <tbody>
+         
+                               {% if datc == 0 %}
+                               <tr><td colspan="8" style="text-align:center; color:black; "> NO DETAILS AVAILABLE</td></tr>
+                               {% else %}
+
+                               {% for dt in data%}
+                                   <tr data-expanded="true">
+                                   <td>{{forloop.counter}}</td>
+                                     <td><img src="../media/{{dt.photo}}" alt="" height="70" width="70"/></td>
+                                   <td>{{dt.category}}</td>
+                                   <td>{{dt.name}}</td>
+                                   <td>{{dt.address}}</td>
+                                  
+                                   <td>{{dt.phone_no}}</td>
+                                   <td><form action="" method="post">
+                                   <input type="hidden" value="{{dt.login}}" name="staff">
+                                   <input type="hidden" value="{{dt.state.state_id}}" name="state">
+                                   <input type="hidden" value="{{dt.district.district_id}}" name="district">
+                                   <input type="hidden" value="{{dt.location.location_id}}" name="location">
+                                   <input type="hidden" value="{{dt.category}}" name="category">
+                                   
+                                   <a href="{% url 'book_labour' %}?staff={{dt.staff_id}}&&state={{dt.state.state_id}}&&district={{dt.district.district_id}}&&location={{dt.location.location_id}}&&category={{dt.category}}"  type="submit" class="btn btn-success">Book Labour</a>
+                                   </form></td>
+                                   
+                           </tr>
+                           {% endfor %}
+                           {% endif %}
+                               
+                               </tbody>
+                             </table>
+                           </div>
+                         </div>
+                       </div>
+
+                       
+</div>
+</div>
+<div style="height:90px;">
+</div>					
+</div>
+</section>
+</section>
+
+
+<script type="text/javascript">
+  
+    function sh(st)
+{
+
+var x=new XMLHttpRequest();
+x.onreadystatechange=function(){
+
+if(x.readyState==4&&x.status==200)
+{
+
+document.getElementById('districtw').innerHTML=x.responseText;
+}
+};
+
+x.open("GET","../getDistrict/?id="+st,true);
+
+x.send();
+
+}
+function sht(st)
+{
+
+var x=new XMLHttpRequest();
+x.onreadystatechange=function(){
+
+if(x.readyState==4&&x.status==200)
+{
+
+document.getElementById('location').innerHTML=x.responseText;
+}
+};
+
+x.open("GET","../get_location/?id="+st,true);
+
+x.send();
+
+}
+</script>
+
+{% endblock %}

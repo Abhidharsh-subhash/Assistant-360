@@ -1,0 +1,219 @@
+{% extends "adminhead.html" %}
+{% load static %}
+{% block content %}
+<section id="main-content" style="min-height: 93vh">
+  <section class="wrapper">
+    <h3>Approve Staff</h3>
+    <div class="row mt">
+      <div class="col-lg-10">
+        <div class="content-panel" style="padding: 10px 10px;">
+
+          <section id="unseen">
+            <table class="table table-bordered table-striped table-condensed" style="width:100%;">
+              <thead>
+                <tr>
+                  <th>Sl:No</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Aadhar No</th>
+                  <th>Phone No</th>
+                  <th>Email Id</th>
+                  <th>Job Category</th>
+                  <th>Experience</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for d in data%}
+                <tr>
+                  <td>{{forloop.counter}}</td>
+                  <td>{{d.name}}</td>
+                  <td>{{d.address}}</td>
+                  <td>{{d.aadhaar_no}}</td>
+                  <td>{{d.phone_no}}</td>
+                  <td>{{d.email}}</td>
+                  <td>{{d.category}}</td>
+                  <td>{{d.exp}}</td>
+                  <td><a class="btn btn-success" data-toggle="modal" data-target="#approve-{{d.staff_id}}"
+                      href="#">Approve / Reject</a>
+                  </td>
+                  <div class="modal fade" id="approve-{{d.staff_id}}" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                              class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                          <h4 class="modal-title custom_align" id="Heading">Approve Staff</h4>
+                        </div>
+                        <div class="modal-body">
+                          <form class="form-horizontal" method="post" name="myForm" onsubmit=""
+                            action="{% url 'approve_staff' %}">
+                            {% csrf_token %}
+                            <input type="hidden" class="form-control" value="{{d.staff_id}}" name="stf_id">
+                            <div class="box-content">
+                              <div class="col-md-10 col-md-offset-2">
+                                <div class="col-md-5">
+                                  <div class="form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" name="name" class="form-control" value="{{d.name}}" readonly
+                                      required>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label for="">Job Category</label>
+                                    <input type="text" name="Category" class="form-control" value="{{d.category}}"
+                                      readonly required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="">Job Experience</label>
+                                    <input type="text" name="Experience" class="form-control" value="{{d.exp}}" readonly
+                                      required>
+                                  </div>
+
+
+
+
+
+
+                                  <div class="form-group">
+                                    <label for="">Address</label>
+                                    <textarea type="text" rows="3" class="form-control" name="addr"
+                                      readonly>{{d.address}}</textarea>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="">Aadhar</label>
+                                    <input type="text" class="form-control" name="qul" value="{{d.aadhaar_no}}"
+                                      readonly>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="">Phone Number</label>
+                                    <input type="text" class="form-control" name="phone" value="{{d.phone_no}}"
+                                      readonly>
+                                  </div>
+
+
+                                  <div class="col-md-5">
+                                    <div class="form-group">
+                                      <label for=""> Staff Photo</label>
+                                      <img src="../media/{{d.photo}}" alt="" height="100" width="100"
+                                        style="margin-right:450px;" />
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="">Staff basic payment</label>
+                                      <input type="text" name="payment" class="form-control" value="{{d.basic_salary}}"
+                                        readonly required>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                      <label for="">Email Id</label>
+                                      <input type="text" class="form-control" name="mail" value="{{d.email}}" readonly>
+                                    </div>
+                                  </div>
+                                </div>
+                                <button type="button" class="btn btn-success"><span class="glyphicon 
+  glyphicon-ok-sign"></span><a data-toggle="modal" data-target="#comp-{{d.staff_id}}" href="#" style="color: #fff;">
+                                    Approve</a></button>
+
+                                <button name="del" type="button" class="btn btn-danger pull-center"><span class="glyphicon 
+  glyphicon-ok-sign"></span><a data-toggle="modal" data-target="#reject-{{d.staff_id}}" href="#" style="color: #fff;">
+                                    Reject</a></button>
+                                <!--<button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>No</button>-->
+                              </div>
+                            </div>
+                        </div>
+
+                        </form>
+                        <div class="modal-footer ">
+
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <div class="modal fade" id="reject-{{d.staff_id}}" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            <h4 class="modal-title custom_align" id="Heading">Reject staff</h4>
+                          </div>
+                          <div class="modal-body">
+                            <br>
+                            <h3 class="modal-title custom_align" id="Heading" style="margin-left:200px;color:#555">Are
+                              You Sure Want To reject staff?</h3>
+                            <br>
+                            <form class="form-horizontal" method="post" action="{% url 'reject_staff' %}">
+                              {% csrf_token %}
+                              <input type="hidden" class="form-control" value="{{d.staff_id}}" name="staff_id">
+                              <div class="box-content">
+
+                                <button name="edit" type="submit" class="btn btn-danger"><span class="glyphicon 
+  glyphicon-ok-sign"></span> Reject</button>
+                                <button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove"></span> Cancel</button>
+                              </div>
+                          </div>
+                          </form>
+                          <div class="modal-footer ">
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                    </div>
+
+
+                    <div class="modal fade" id="comp-{{d.staff_id}}" role="dialog">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span
+                                class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            <h4 class="modal-title custom_align" id="Heading">Approve staff</h4>
+                          </div>
+                          <div class="modal-body">
+                            <br>
+                            <h3 class="modal-title custom_align" id="Heading" style="margin-left:200px;color:#555">Are
+                              You Sure Want To approve staff?</h3>
+                            <br>
+                            <form class="form-horizontal" method="post" action="{% url 'approved_staff' %}">
+                              {% csrf_token %}
+                              <input type="hidden" class="form-control" value="{{d.staff_id}}" name="staff_id">
+                              <div class="box-content">
+
+                                <button name="edit" type="submit" class="btn btn-success"><span class="glyphicon 
+  glyphicon-ok-sign"></span> Approve</button>
+                                <button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span
+                                    class="glyphicon glyphicon-remove"></span> Cancel</button>
+                              </div>
+                          </div>
+                          </form>
+                          <div class="modal-footer ">
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </section>
+        </div><!-- /content-panel -->
+      </div><!-- /col-lg-4 -->
+      <div style="height:480px;">
+      </div>
+    </div><!-- /row -->
+  </section>
+</section>
+{% endblock %}

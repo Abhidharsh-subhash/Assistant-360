@@ -1,0 +1,122 @@
+{% extends "userhead.html" %}
+{% load static %}
+{% block content %}
+
+<section id="main-content">
+	<section class="wrapper">
+	<div class="form-w3layouts">
+       
+        <!-- page start-->
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-12">
+                   
+					<?php
+					$qry=mysql_query("select * from tbl_book_labour
+INNER JOIN tb_staff ON tbl_book_labour.bl_staff=tb_staff.staff_login
+where bl_user_id='$login' and (bl_status=4  || bl_status=3 || bl_status=0)  order by bl_id desc ");
+$raw=0;
+					if(isset($qry))
+					{	
+					?>
+						<div class="table-agile-info">
+ <div class="panel panel-default">
+    <div class="panel-heading">
+     Booked Labour List
+    </div>
+    <div>
+      <table class="table" ui-jq="footable" ui-options='{
+        "paging": {
+          "enabled": true
+        },
+        "filtering": {
+          "enabled": true
+        },
+        "sorting": {
+          "enabled": true
+        }}'>
+        <thead>
+          <tr>
+		    <th>Sl:No</th>
+							  <th>Name</th>
+							  <th>Category</th>
+							 <th>Contact</th>
+                              <th>From Date</th>
+							  <th>To date</th>
+                              <th>Amount</th>
+                              <th>status</th>
+
+							  
+							  
+          </tr>
+        </thead>
+        <tbody>
+            {% for d in datakk %}
+
+             <tr>
+                                    <td>{{ forloop.counter }}</td>
+
+                                    <td>{{ d.staff.name }}</td>
+                                    <td>{{ d.category }}</td>
+                                    <td>{{ d.staff.phone_no}}</td>
+                                    <td>{{ d.from_date}}</td>
+                                    <td>{{ d.to_date }}</td>
+                                    
+                                    <td>{{ d.amount }}</td>
+                                    <td>{{ d.status }}</td>
+                                    <td>
+                                        {% if d.status == "waiting" %}
+                                        <a class="btn btn-success" data-toggle="modal" data-target="#delete-{{d.labour_id}}" href="#">Delete</a>
+                                {% endif %}
+                                    </td>
+                                   
+</tr> 
+<div class="modal fade" id="delete-{{d.labour_id}}" role="dialog" >
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+      <h4 class="modal-title custom_align" id="Heading">Delete User</h4>
+    </div>
+       <div class="modal-body">
+       <br>
+       <h3 class="modal-title custom_align" id="Heading" style="margin-left:200px;color:#e85c68">Are You Want Delete This User?</h3>
+       <br>
+       <form class="form-horizontal" method="post" name="myForm" onsubmit="" action="{% url 'delete_labour' %}">
+        {% csrf_token %}
+         <input type="hidden" class="form-control" value="{{d.labour_id}}" name="labour_id"> 	 
+       <div class="box-content">
+        
+      <button name="delete" type="submit" class="btn btn-success" ><span class="glyphicon 
+      glyphicon-ok-sign"></span>Submit</button>
+    <button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>No</button>
+                          
+    </div>								
+    </div> 
+    
+    </form>
+       <div class="modal-footer ">
+      
+    </div> 
+      </div>
+    <!-- /.modal-content --> 
+    </div>
+    </div>
+ {% endfor %}
+								
+                            </tbody>
+                            
+                          </table>
+                          
+    </div>
+  </div>
+</div>
+<?php
+}
+?>
+</div>
+</div>
+</div>
+</section>
+</section>
+{% endblock %}

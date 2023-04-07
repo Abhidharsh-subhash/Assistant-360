@@ -1,0 +1,95 @@
+{% extends "userhead.html" %}
+{% load static %}
+{% block content %}
+
+<section id="main-content">
+	<section class="wrapper">
+	<div class="form-w3layouts">
+       
+        <!-- page start-->
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-12">
+                   
+					<?php
+					$qry=mysql_query("select * from tbl_book_labour
+INNER JOIN tb_staff ON tbl_book_labour.bl_staff=tb_staff.staff_login
+where bl_user_id='$login' and (bl_status=4  || bl_status=3 || bl_status=0)  order by bl_id desc ");
+$raw=0;
+					if(isset($qry))
+					{	
+					?>
+						<div class="table-agile-info">
+ <div class="panel panel-default">
+    <div class="panel-heading">
+     Completed Labour List
+    </div>
+    <div>
+      <table class="table" ui-jq="footable" ui-options='{
+        "paging": {
+          "enabled": true
+        },
+        "filtering": {
+          "enabled": true
+        },
+        "sorting": {
+          "enabled": true
+        }}'>
+        <thead>
+          <tr>
+		    <th>Sl:No</th>
+							  <th>Name</th>
+							  <th>Category</th>
+							 <th>Contact</th>
+                              <th>From Date</th>
+							  <th>To date</th>
+                              <th>Amount</th>
+                             
+
+							  
+							  
+          </tr>
+        </thead>
+        <tbody>
+            {% for d in datatt %}
+
+             <tr>
+                                    <td>{{ forloop.counter }}</td>
+
+                                    <td>{{ d.staff.name }}</td>
+                                    <td>{{ d.category }}</td>
+                                    <td>{{ d.staff.phone_no}}</td>
+                                    <td>{{ d.from_date}}</td>
+                                    <td>{{ d.to_date }}</td>
+                                    
+                                    <td>{{ d.amount }}</td>
+                                  
+                                    <td>
+                                    </td>
+                                   
+</tr> 
+
+      
+    </div> 
+      </div>
+    <!-- /.modal-content --> 
+    </div>
+    </div>
+ {% endfor %}
+								
+                            </tbody>
+                            
+                          </table>
+                          
+    </div>
+  </div>
+</div>
+<?php
+}
+?>
+</div>
+</div>
+</div>
+</section>
+</section>
+{% endblock %}

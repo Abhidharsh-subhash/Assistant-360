@@ -1,0 +1,193 @@
+{% extends "adminhead.html" %}
+{% load static %}
+{% block content %}
+
+
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<section id="main-content" style="min-height: 93vh">
+          <section class="wrapper">
+          	<h3>List Location</h3>
+		  		<div class="row mt">
+			  		<div class="col-lg-10">
+                      <div class="content-panel" style="padding: 10px">
+					  	 
+                          <section id="unseen">
+                            <table class="table table-bordered table-striped table-condensed" style="width:100%">
+                              <thead>
+                              <tr>
+							  <th>Sl:No</th>
+                              <th>State</th>
+							  <th>District</th>
+							  <th>Location</th>
+							  <th>Action</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+							  
+                             {% for d in data%}
+                              <tr>
+                                  <td>{{forloop.counter}}</td>
+                                  <td>{{d.distict.state.state}}</td>
+								  <td>{{d.distict.district}}</td>
+								  <td>{{d.location}}</td>
+								   <td>
+								   <div class="btn-group">
+		                      <button type="button" class="btn btn-info btn-flat">Action</button>
+		                      <button type="button" class="btn btn-info btn-flat dropdown-toggle" data-toggle="dropdown">
+										<span class="caret"></span>
+										<span class="sr-only">Toggle Dropdown</span>
+									  </button>
+									  <ul class="dropdown-menu" role="menu">
+									<li><a data-toggle="modal" data-target="#edit-{{d.location_id}}" href="#"><i class="fa fa-trash-o">Edit</i></a></li>
+									<li><a data-toggle="modal" data-target="#delete-{{d.location_id}}" href="#"><i class="fa fa-trash-o">Delete</i></a></li>
+									  </ul>
+									  </div>
+									</td>
+		<div class="modal fade" id="edit-{{d.location_id}}" role="dialog" >
+     <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Edit District</h4>
+      </div>
+         <div class="modal-body">
+		  <form class="form-horizontal" method="post" name="myForm" onsubmit="return validateForm();" action="{% url 'edit_location' %}">
+		{% csrf_token %}
+			<input type="hidden" class="form-control"  value="{{d.location_id}}"  name="l_id"> 	 
+		 <div class="box-content">
+		 <div class="col-md-10 col-md-offset-2">
+			<div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="form-field-1" >State</label>
+                                      <div class="col-sm-9">
+										<select name="state" class="col-xs-10 col-sm-5" onchange="getDistrict(this.value,'{{d.location_id}}')" id="state-<?php echo $i?>">
+                                            <option value="">-select-</option>
+                                        {% for ds in datas %}
+										<option value="{{ds.state_id}}" {% if ds.state_id == d.distict.state.state_id %}
+                                        selected="selected"
+                                        {% endif %}
+                                        >{{ds.state}}</option>
+									{% endfor %}
+                                       
+										</select>
+										</div>
+									</div>
+									<br>
+									</div>
+									<br><br><br>
+		                            <div class="col-md-10 col-md-offset-2">
+			                         <div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="form-field-1" >District</label>
+                                      <div class="col-sm-9">
+										<select name="district" id="districtw-{{d.location_id}}" class="col-xs-10 col-sm-5">
+										<option value="">-select-</option>
+									{% for drr in d.getalldist %}
+                                    <option value="{{drr.district_id}}"
+                                    {% if drr.district_id == d.distict.district_id %}
+                                    selected="selected"
+                                    {% endif %}
+                                    >{{drr.district}}</option>
+                                    {% endfor%}
+										</select>
+										</div>
+									</div>
+									<br>
+									</div>
+									<br><br><br>
+									<div class="col-md-10 col-md-offset-2">
+			                         <div class="form-group">
+										<label class="col-sm-2 control-label no-padding-right" for="form-field-1" >Location</label>
+                                      <div class="col-sm-9">
+										<input type="text" name="location" value="{{d.location}}" class="col-xs-10 col-sm-5">
+										</div>
+									</div>
+									<br>
+									</div>
+									<br><br><br>
+<button name="edit" type="submit" class="btn btn-success" ><span class="glyphicon 
+		glyphicon-ok-sign"></span>Submit</button>
+	<button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>No</button>
+								</div> 
+</div>								
+      </div>
+      
+	  </form>
+	     <div class="modal-footer ">
+        
+      </div> 
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+  <div class="modal fade" id="delete-{{d.location_id}}" role="dialog" >
+     <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Delete District</h4>
+      </div>
+         <div class="modal-body">
+		 <br>
+		 <h3 class="modal-title custom_align" id="Heading" style="margin-left:200px;color:#e85c68">Are You Want Delete This Location?</h3>
+		 <br>
+		 <form class="form-horizontal" method="post" name="myForm" onsubmit="" action="{% url 'delete_location' %}">
+			{% csrf_token %}
+			<input type="hidden" class="form-control" value="{{d.location_id}}" name="l_id"> 	 
+		 <div class="box-content">
+		  
+		<button name="delete" type="submit" class="btn btn-success" ><span class="glyphicon 
+		glyphicon-ok-sign"></span>Submit</button>
+	<button type="reset" class="btn btn-default pull-right" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>No</button>
+							
+</div>								
+      </div>
+      
+	  </form>
+	     <div class="modal-footer ">
+        
+      </div> 
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+  </div>
+                              </tr>
+                              {% endfor%}
+															
+                            </tbody>
+                          </table>
+                          </section>
+                  </div><!-- /content-panel -->
+               </div><!-- /col-lg-4 -->			   
+		  	</div><!-- /row -->
+			</section>
+		</section>
+
+	 <script type="text/javascript">
+	function getDistrict(st,k){
+		
+		var x=new XMLHttpRequest();
+x.onreadystatechange=function(){
+
+if(x.readyState==4&&x.status==200)
+{
+
+document.getElementById('districtw-'+k).innerHTML=x.responseText;
+}
+};
+
+x.open("GET","../getDistrict/?id="+st,true);
+
+x.send();
+    }
+</script>
+<script>
+	function validateForm()
+     {
+	 var x=document.forms["myForm"]["location"].value;
+	 var letters = /^[A-Z a-z ]+$/;
+     if(!x.match(letters))
+     {
+             alert("Location should be Aphabet");
+             return false;
+     }
+	 }
+	 </script>
+{% endblock %}

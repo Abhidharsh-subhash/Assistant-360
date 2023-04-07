@@ -1,0 +1,65 @@
+{% extends "adminhead.html" %}
+{% load static %}
+{% block content %}
+
+
+<section id="main-content" style="min-height: 93vh">
+    <section class="wrapper">
+        <h3>Ongoing jobs</h3>
+            <div class="row mt">
+                <div class="col-lg-10">
+                <div class="content-panel" style="padding: 10px">
+                     
+                    <section id="unseen">
+                      <table class="table table-bordered table-striped table-condensed" style="width:100%">
+                        <thead>
+                        <tr>
+                        <th>Sl:No</th>
+                        <th> User Name</th>
+                         <th>Address</th>
+                         <th>Phone</th>
+                        <th>From Date</th>
+                        <th>To date</th>
+                        <th>Job description</th>
+                        <th>Staff Response </th>
+                        <!--<th>Action</th>-->
+                        </tr>
+  </thead>
+  <tbody>
+ 
+                        {% for d in data %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{d.userid.username}}
+                                </td>
+                              <td>{{d.userid.username}}</td>
+                                <td>{{d.userid.username}}</td>
+                            <td>{{d.from_date}}</td>
+                            <td>{{d.to_date}}</td>
+                            <td>{{d.desc}}</td>
+      
+                            <td>{% if d.reject == "" %}
+                               Waiting for Confirmation 
+                                {% elif d.reject != "rejected" %}
+                               Confirmed by Staff
+                                {% endif %}
+                            </td>
+
+
+
+
+                                                
+  
+
+
+                        </tr>
+                      {% endfor %}								
+                      </tbody>
+                    </table>
+                    </section>
+            </div><!-- /content-panel -->
+         </div><!-- /col-lg-4 -->	
+        </div><!-- /row -->
+      </section>
+  </section>
+{% endblock %}

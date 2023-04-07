@@ -1,0 +1,104 @@
+{% extends "userhead.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<section id="main-content">
+	<section class="wrapper">
+	<div class="form-w3layouts">
+        <!-- page start-->
+        <!-- page start-->
+        <div class="row">
+            <div class="col-lg-12">
+                    <section class="panel" style="height:600px;">
+                        <header class="panel-heading">
+                         Book Labours
+                        </header>
+                        <div class="panel-body">
+                            <div class="position-center" style="margin-left:340px;">
+							<form  action="" name="myForm" method="post" onsubmit="return validateForm();">
+{% csrf_token %}
+                                <input type="hidden" name="curdate" value="<?php echo date('Y-m-d')?>" id="form-field-1" placeholder="" class="col-xs-10 col-sm-5" required/>
+							 <input type="hidden" name="staff" value="{{staff}}" class="form-control"  required>
+							   <div class="form-group" style="width:330px;">
+                                    <label for="exampleInputEmail1">From Date</label>
+                               <input type="date" name="fdate" id="fdate" class="form-control"  min="" required>   
+								 </div>
+                                <div class="form-group" style="width:330px;">
+                                    <label for="exampleInputPassword1">To Date</label>
+                                    <input type="date" name="todate" id="todate" class="form-control" onchange="sh(this.value)" min="" required>   
+                                </div>
+								 <div class="form-group" style="width:330px;">
+                                    <label for="exampleInputFile">Category</label>
+                                     <input type="text" name="category" value="{{category}}" class="form-control" required readonly>
+                                </div>
+								<div class="form-group" style="width:330px;">
+                                   
+                                     <input type="hidden" name="amount" id="amount" value="{{datastf.basic_salary}}" class="form-control" required readonly>
+                                </div>
+								
+                              
+                                <div class="form-group" style="width:330px;">
+                                    <label for="exampleInputFile">About Job</label>
+                                     <textarea  name="aboutjob"  class="form-control" required ></textarea>
+                                </div>
+							
+                                <div class="form-group" style="width:330px;" >
+
+                                <label for="exampleInputFile">Amount</label>    
+									 <input type="text" name="amt" id="amt" class="form-control" readonly required>
+                                </div>
+                               <button type="submit"  name="submit"class="btn btn-info">Submit</button>
+                            </form>
+                            </div>
+
+                        </div>
+                    </section>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+<script type="text/javascript">
+    function sh(st) 
+    {
+        
+
+        var textValue1 = document.getElementById('fdate').value;
+        
+     var textValue2 = document.getElementById('todate').value;
+      var c=document.getElementById('amount').value;
+      var date1 = new Date(textValue1);
+var date2 = new Date(textValue2);
+  
+// To calculate the time difference of two dates
+if(date2.getTime()>date1.getTime())
+{
+var Difference_In_Time = date2.getTime() - date1.getTime();
+}else {
+    var Difference_In_Time = date1.getTime() - date2.getTime();
+}
+
+// To calculate the no. of days between two dates
+var Difference_In_Days =Difference_In_Time / (1000 * 3600 * 24);
+//console.log(Difference_In_Days)
+Difference_In_Days=Math.floor(Difference_In_Days)+1;
+document.getElementById('amt').value=eval(c) * eval(Difference_In_Days)
+    
+            
+          
+   
+   
+  
+     
+     
+    }
+  </script>				
+
+
+
+
+{% endblock %}
